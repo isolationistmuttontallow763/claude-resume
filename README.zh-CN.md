@@ -6,6 +6,10 @@ AI 驱动的简历管理系统 — 一份素材，N 份定制简历。
 
 > 不只是一个 Skill，而是一个用 Claude Code Skill 构建完整工作流的示范项目。
 
+<p align="center">
+  <img src="assets/demo-output.png" alt="生成的 PDF 示例" width="600">
+</p>
+
 基于 [Claude Code](https://claude.ai/code) Skill 体系，从结构化经历素材出发，根据不同目标岗位自动生成定制化 LaTeX 简历。
 
 ## 特性
