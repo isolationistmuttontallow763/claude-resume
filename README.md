@@ -16,7 +16,7 @@ Claude Code skill that generates tailored LaTeX résumés from structured experi
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│  Onboarding (/init)                                     │
+│  Onboarding (/resume init)                              │
 │                                                         │
 │  Paste resume  ──→  auto-parse  ──→  experiences/*.md   │
 │       or                                                │
@@ -25,7 +25,7 @@ Claude Code skill that generates tailored LaTeX résumés from structured experi
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Generate (/generate-resume "Backend Engineer")         │
+│  Generate (/resume generate "Backend Engineer")         │
 │                                                         │
 │  read experiences  →  analyze JD  →  tailor & reframe   │
 │                                                         │
@@ -34,7 +34,7 @@ Claude Code skill that generates tailored LaTeX résumés from structured experi
                            │
                            ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Maintain (/add-experience)                             │
+│  Maintain (/resume add)                                 │
 │                                                         │
 │  "Got promoted" / "New project" / "Got certified"       │
 │  → auto-update experiences/*.md                         │

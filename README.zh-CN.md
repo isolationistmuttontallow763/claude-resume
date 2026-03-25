@@ -12,95 +12,157 @@ AI 驱动的简历管理系统 — 一份素材，N 份定制简历。
 
 基于 [Claude Code](https://claude.ai/code) Skill 体系，从结构化经历素材出发，根据不同目标岗位自动生成定制化 LaTeX 简历。
 
+## 工作流程
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  初始化 (/resume init)                                   │
+│                                                         │
+│  粘贴简历  ──→  自动解析  ──→  experiences/*.md          │
+│       或                                                │
+│  问答引导  ──→  逐步填写  ──→  experiences/*.md          │
+└──────────────────────────┬──────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  生成 (/resume generate "后端开发工程师")                  │
+│                                                         │
+│  读取素材  →  分析 JD  →  定制化重组                      │
+│                                                         │
+│  → resume.tex  →  make en  →  output/姓名-岗位.pdf       │
+└─────────────────────────────────────────────────────────┘
+                           │
+                           ▼
+┌─────────────────────────────────────────────────────────┐
+│  维护 (/resume add)                                      │
+│                                                         │
+│  "升职了" / "做了新项目" / "拿了证书"                      │
+│  → 自动更新 experiences/*.md                              │
+└─────────────────────────────────────────────────────────┘
+```
+
 ## 特性
 
+- **零配置上手** — 粘贴现有简历或回答几个问题即可，无需手动编辑 Markdown
 - **素材驱动** — 经历、技能、荣誉存储在 Markdown 文件中，与简历呈现分离
 - **AI 定制化** — 根据 JD 自动选择经历、调整呈现角度、重排优先级
 - **多岗位适配** — 同一段经历在不同方向下有不同包装（后端/云原生/AI 方向等）
+- **自然语言维护** — 用自然语言添加经历、技能、证书
 - **LaTeX 输出** — 专业排版，编译为 PDF，基于 [billryan/resume](https://github.com/billryan/resume) 模板
+- **版本追踪** — `.history/` 每次生成前自动备份
+
+## 前置条件
+
+- **Claude Code CLI** — 已安装并认证
+- **XeLaTeX** — macOS: `brew install --cask mactex`（[下载](https://tug.org/mactex/)）
 
 ## 快速开始
 
-### 前置条件
+### 1. 安装
 
-- [Claude Code](https://claude.ai/code) CLI
-- XeLaTeX（macOS: `brew install --cask mactex`）
-
-### 使用
+**方式 A：作为 Skill 安装（推荐）**
 
 ```bash
-# 1. 克隆项目
+npx skills add deusyu/claude-resume --yes
+```
+
+然后在任意目录：
+
+```
+/resume init
+```
+
+Skill 会自动搭建项目结构（复制 `resume.cls`、`Makefile`，创建 `experiences/` 目录）。
+
+**方式 B：克隆仓库**
+
+```bash
 git clone https://github.com/deusyu/claude-resume.git
 cd claude-resume
-
-# 2. 启动 Claude Code
 claude
-
-# 3. 初始化素材库（二选一）
-/init                          # 问答引导，一步步填写
-/init <粘贴你的简历或经历文本>    # 自动解析结构化
-
-# 4. 生成简历
-/generate-resume 后端开发工程师
-
-# 或指定 JD 文件
-/generate-resume jobs/target-position.md
-
-# 5. 编译 PDF
-make en
 ```
 
-## 目录结构
+### 2. 初始化素材库
+
+**问答引导（推荐新用户）**
 
 ```
-claude-resume/
-├── experiences/                 # 经历素材库（你的数据在这里）
-│   ├── profile.md               #   个人信息 + 教育经历
-│   ├── work/                    #   工作详历（按公司分文件）
-│   ├── projects.md              #   个人项目
-│   ├── skills.md                #   技能清单
-│   └── honors.md                #   荣誉 + 量化指标
-├── jobs/                        # 目标岗位 JD
-│   └── _template.md             #   JD 格式模板
-├── output/                      # 生成的 PDF
-├── .history/                    # .tex 历史备份
-├── .claude/commands/            # Claude Code Skills
-│   ├── init.md                  #   /init — 初始化素材库
-│   ├── generate-resume.md       #   /generate-resume
-│   └── add-experience.md        #   /add-experience
-├── resume.tex                   # 当前 LaTeX 源文件
-├── resume.cls                   # LaTeX 样式类
-└── Makefile                     # 构建命令
+/resume init
 ```
 
-## Skill 说明
+Skill 会逐步引导你填写 — 姓名、教育、工作经历、项目、技能 — 一次问一个问题。
 
-### `/init [可选：粘贴简历文本]`
+**导入现有简历**
 
-初始化 Skill。两种模式：
+```
+/resume init <粘贴你的简历或经历文本>
+```
+
+自动解析并结构化为 `experiences/` 文件。
+
+### 3. 生成简历
+
+```
+/resume generate 后端开发工程师
+```
+
+或指定 JD 文件：
+
+```
+/resume generate jobs/bytedance-backend.md
+```
+
+Skill 会展示定制化方案（保留/舍弃哪些经历、如何重新包装），确认后生成。
+
+### 4. 持续更新
+
+```
+/resume add 最近做了一个实时数据管道项目，处理 100 万事件/秒
+/resume add 拿到了 AWS Solutions Architect Professional 认证
+```
+
+## 项目结构
+
+| 路径 | 用途 |
+|------|------|
+| `skills/resume/SKILL.md` | Skill 定义 — 所有工作流（init、generate、add） |
+| `skills/resume/assets/` | 打包资产（resume.cls、Makefile、模板） |
+| `skills/resume/references/` | LaTeX 命令参考 |
+| `experiences/` | 经历素材库（唯一数据源） |
+| `jobs/_template.md` | 目标岗位 JD 模板 |
+| `resume.tex` | 当前 LaTeX 源文件 |
+| `resume.cls` | LaTeX 样式类（布局、字体、命令） |
+| `Makefile` | 构建命令（`make en`、`make zh`、`make all`、`make clean`） |
+| `.history/` | .tex 历史版本备份 |
+| `output/` | 生成的 PDF 输出目录 |
+
+## 子命令
+
+### `/resume init [可选：粘贴简历文本]`
+
+初始化。两种模式：
 
 - **无参数** → 问答引导，一次问一个问题（姓名 → 教育 → 工作 → 项目 → 技能 → 荣誉）
 - **带文本** → 解析你的现有简历或 LinkedIn 导出，自动生成 `experiences/` 结构化文件
 
-### `/generate-resume [岗位名称或JD文件路径]`
+### `/resume generate [岗位名称或 JD 文件路径]`
 
-核心 Skill。读取全部素材 → 分析岗位需求 → 选择和重组经历 → 生成 `resume.tex` → 编译 PDF。
+核心工作流，完整流水线：
 
-示例：
+1. **读取** `experiences/` 下所有素材文件
+2. **分析** 岗位需求 — 提取核心技能、优先级
+3. **方案** — 选择经历、决定排序和侧重、确定保留/舍弃的 section
+4. **确认** — 展示方案给用户，等待确认
+5. **生成** — 使用 `resume.cls` 命令写入 `resume.tex`
+6. **构建** — `make en` → 复制 PDF 到 `output/`
+
+### `/resume add [描述]`
+
+用自然语言更新经历素材：
+
 ```
-/generate-resume AI 后端工程师
-/generate-resume jobs/bytedance-backend.md
-/generate-resume  （不带参数会询问目标岗位）
-```
-
-### `/add-experience [描述]`
-
-用自然语言添加或更新经历素材。
-
-示例：
-```
-/add-experience 我最近做了一个开源 RAG 项目，用 LlamaIndex 实现的，已经有 200 star 了
-/add-experience 拿到了 AWS Solutions Architect 认证
+/resume add 做了一个开源 RAG 项目，用 LlamaIndex 实现，200+ Stars
+/resume add 拿到了 AWS Solutions Architect 认证
 ```
 
 ## 自定义
